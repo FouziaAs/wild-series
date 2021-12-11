@@ -8,6 +8,8 @@
         <div class="media-body">
             <h1 class="mt-0">{{ program.title }}</h1>
             <p>{{ program.synopsis }}</p>
+            <p>Catégorie : {{ program.category.name }}</p>
+            
             {% for season in program.seasons %}
             <p>Saison : {{ season.description }}</p>
             <a href="{{ path('program_season_show', {'program_id': program.id, 'season_id': season.id}) }}">Voir les épisodes de la saison.
