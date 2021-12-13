@@ -43,7 +43,7 @@ class ProgramController extends AbstractController
      *
      * @Route("/new", name="new")
      */
-    public function new() : Response
+    public function new(Request $request) : Response
     {
         // Create a new Program Object
         $program = new Program();
@@ -52,7 +52,7 @@ class ProgramController extends AbstractController
         // Get data from HTTP request
         $form->handleRequest($request);
         // Was the form submitted ?
-        if ($form->isSubmitted()) {
+        if ($form->isSubmitted() && $form->isValid()) {
             // Deal with the submitted data
             // Get the Entity Manager
             $entityManager = $this->getDoctrine()->getManager();
@@ -64,7 +64,9 @@ class ProgramController extends AbstractController
             return $this->redirectToRoute('program_index');
         }
             // Render the form
-        return $this->render('program/new.html.twig', ["form" => $form->createView()]);
+        return $this->render('program/new.html.twig', [
+            "form" => $form->createView()
+        ]);
     }
 
      /**
@@ -79,7 +81,7 @@ class ProgramController extends AbstractController
     }
 
     /**
-     *@Route("/{program_id}/seasons/{season_id}", name= "season_show")
+     *@Route("/{program_id}/season/{season_id}", name= "season_show")
      *@ParamConverter("program", class="App\Entity\Program", options={"mapping": {"program_id": "id"}})
      *@ParamConverter("season", class="App\Entity\Season", options={"mapping": {"season_id": "id"}})
      */

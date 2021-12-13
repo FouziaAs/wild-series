@@ -1,6 +1,7 @@
 {% extends "base.html.twig" %}
 
 {% block body %}
+    {{ form_errors(form) }}
     {{ form_start(form) }}
     {{ form_widget(form) }}
     <button type="submit"class="bouton">Ajouter une série</button>

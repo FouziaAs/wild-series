@@ -32,8 +32,6 @@ class CategoryController extends AbstractController
 
 /**
      * The controller for the category add form
-     *Display the form or deal with it
-     *
      * @Route("/new", name="new")
      */
     public function new(Request $request) : Response
@@ -45,7 +43,7 @@ class CategoryController extends AbstractController
         // Get data from HTTP request
         $form->handleRequest($request);
         // Was the form submitted ?
-        if ($form->isSubmitted()) {
+        if ($form->isSubmitted() && $form->isValid()) {
             // Deal with the submitted data
             // Get the Entity Manager
             $entityManager = $this->getDoctrine()->getManager();
@@ -77,17 +75,17 @@ if (!$category) {
     throw $this->createNotFoundException(
         'No category with name : '.$categoryName.' found in category\'s table.'
     );
-}
+} else {
     $program = $this->getDoctrine()
         ->getRepository(Program::class)
         ->findBy(
             ['category' => $category->getId()],
             ['id' => 'DESC'], 3,
         );
-
+}
         return $this->render('category/show.html.twig', [
     'category' => $category,
     'programs' => $program
-]);
-}
+    ]);
+    }
 }
