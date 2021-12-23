@@ -6,9 +6,23 @@ use App\Entity\Program;
 use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Common\DataFixtures\DependentFixtureInterface;
 use Doctrine\Persistence\ObjectManager;
+use App\Service\Slugify;
 
 class ProgramFixtures extends Fixture implements DependentFixtureInterface
 {
+    public const PROGRAMS = [
+        'La Casa de Papel',
+        'Prison break',
+        'Le jeu de la dame ',
+        'Outlander',
+        'Wheel time'
+    ];
+
+    public function __construct(Slugify $slugify)
+    {
+        $this->slugify = $slugify;
+    }
+
     public function load(ObjectManager $manager)
     {
         $program = new Program();
@@ -32,6 +46,4 @@ class ProgramFixtures extends Fixture implements DependentFixtureInterface
           CategoryFixtures::class,
         ];
     }
-
-
 }

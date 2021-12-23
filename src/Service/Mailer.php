@@ -9,7 +9,6 @@ class Mailer
 
     public function __construct(string $adminEmail)
     {
-        // ...
         $this->adminEmail = $adminEmail;
     }
 

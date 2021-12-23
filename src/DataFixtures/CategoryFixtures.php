@@ -17,6 +17,8 @@ class CategoryFixtures extends Fixture
         'Historique',
         'Horreur',
         'Thriller',
+        'Drame',
+        'Comédie dramatique'
     ];
     public function load(ObjectManager $manager)
     {
@@ -24,7 +26,8 @@ class CategoryFixtures extends Fixture
             $category = new Category();
             $category->setName($categoryName);
             $manager->persist($category);
-            $this->addReference('category_' . $key, $category);
+            $category->setSeason($this->getReference('categorie_0'));
+
         }
         $manager->flush();
     }

@@ -33,7 +33,6 @@ class Program
      * @ORM\Column(type="text", length=255)
      * @Assert\NotBlank(message = "Veuillez compléter ce champs")
      */
-
     private $synopsis;
 
     /**

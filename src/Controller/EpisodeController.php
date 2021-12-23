@@ -11,6 +11,8 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use App\Service\Slugify;
+use Symfony\Component\Mailer\MailerInterface;
+use Symfony\Component\Mime\Email;
 
 /**
  * @Route("/episode")
@@ -30,7 +32,7 @@ class EpisodeController extends AbstractController
     /**
      * @Route("/new", name="episode_new", methods={"GET", "POST"})
      */
-    public function new(Request $request, EntityManagerInterface $entityManager, Slugify $slugify): Response
+    public function new(Request $request, EntityManagerInterface $entityManager, Slugify $slugify, MailerInterface $mailer): Response
     {
         $episode = new Episode();
         $form = $this->createForm(EpisodeType::class, $episode);
@@ -41,8 +43,16 @@ class EpisodeController extends AbstractController
             $episode->setSlug($slug);
             $entityManager->persist($episode);
             $entityManager->flush();
+        
+        $email = (new Email())
+                ->from('admin_wild-series@example.com')
+                ->to('your_email@example.com')
+                ->subject('Un nouvel épisode vient d\'être publié !')
+                ->html($this->renderView('episode/newEpisodeEmail.html.twig', ['episode' => $episode]));
 
-            return $this->redirectToRoute('episode_index', [], Response::HTTP_SEE_OTHER);
+        $mailer->send($email);
+            // Finally redirect to episodes list
+            return $this->redirectToRoute('episode_index');
         }
 
         return $this->renderForm('episode/new.html.twig', [
@@ -64,12 +74,14 @@ class EpisodeController extends AbstractController
     /**
      * @Route("/{slug}/edit", name="episode_edit", methods={"GET", "POST"})
      */
-    public function edit(Request $request, Episode $episode, EntityManagerInterface $entityManager): Response
+    public function edit(Request $request, Episode $episode, EntityManagerInterface $entityManager, Slugify $slugify): Response
     {
         $form = $this->createForm(EpisodeType::class, $episode);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
+            $slug = $slugify->generate($episode->getTitle());
+            $episode->setSlug($slug);
             $entityManager->flush();
 
             return $this->redirectToRoute('episode_index', [], Response::HTTP_SEE_OTHER);
@@ -82,7 +94,7 @@ class EpisodeController extends AbstractController
     }
 
     /**
-     * @Route("/{slug}", name="episode_delete", methods={"POST"})
+     * @Route("/{id}", name="episode_delete", methods={"POST"})
      */
     public function delete(Request $request, Episode $episode, EntityManagerInterface $entityManager): Response
     {
