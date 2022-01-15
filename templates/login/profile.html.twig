@@ -1,0 +1,25 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Hello {{app.user.email}} !{% endblock %}
+
+{% block body %}
+<h1>Bienvenue sur ta liste de programmes {{app.user.email}}</h1>
+
+<ul>
+    {% for program in app.user.programs %}
+        <li>{{program.title}}</li>
+    {% else %}
+        <p>Aucune série pour le moment</p>
+    {% endfor %}
+</ul>
+{% if 'ROLE_CONTRIBUTOR' in app.user.roles %}
+    <h2>Derniers commentaires</h2>
+    <ul>
+        {% for comment in app.user.comments %}
+            <li>{{comment.episode.season.program}} - {{comment.episode.season}} - {{comment.episode}} - {{comment.comment}}</li>
+        {% else %}
+            <p>Aucun commentaire pour le moment</p>
+        {% endfor %}
+    </ul>
+{% endif %}
+{% endblock %}

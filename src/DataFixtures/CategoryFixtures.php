@@ -20,13 +20,14 @@ class CategoryFixtures extends Fixture
         'Drame',
         'Comédie dramatique'
     ];
+
     public function load(ObjectManager $manager)
     {
         foreach (self::CATEGORIES as $key => $categoryName) {        
             $category = new Category();
             $category->setName($categoryName);
             $manager->persist($category);
-            $category->setSeason($this->getReference('categorie_0'));
+            $this->addReference('category_' . $key, $category);
 
         }
         $manager->flush();

@@ -32,7 +32,7 @@ class EpisodeFixtures extends Fixture implements DependentFixtureInterface
             $episode->setNumber($episodeNumber);
             $episode->setTitle('Un super épisode');
             $episode->setSlug($this->slugify->generate($episode->getTitle()));
-            $episode->setSynopsis("Ceci est le descriptif de $episodeNumber");
+            $episode->setSynopsis("Ceci est le descriptif de l'épisode $episodeNumber");
             $manager->persist($episode);
             $episode->setSeason($this->getReference('season_0'));
         }

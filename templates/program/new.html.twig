@@ -1,9 +1,11 @@
-{% extends "base.html.twig" %}
+{% extends 'base.html.twig' %}
+
+{% block title %}New Program{% endblock %}
 
 {% block body %}
-    {{ form_errors(form) }}
-    {{ form_start(form) }}
-    {{ form_widget(form) }}
-    <button type="submit"class="bouton">Ajouter une série</button>
-    {{ form_end(form) }}
+    <h1>Create new Program</h1>
+
+    {{ include('program/_form.html.twig') }}
+
+    <a href="{{ path('program_index') }}">back to list</a>
 {% endblock %}

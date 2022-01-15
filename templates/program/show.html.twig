@@ -1,6 +1,6 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Série #{{ program.id }}{% endblock %}
+{% block title %}{{ program.title }}{% endblock %}
 
 {% block body %}
     <div class="media">
@@ -31,5 +31,10 @@
     {% else %}
         <li>Pas d'acteur pour cette série</li>
     {% endfor %}
+</ul>
+<ul>
+{% if is_granted("ROLE_ADMIN") %}
+    <a href="{{ path('program_edit', { 'slug': program.slug} ) }}">Éditer</a>
+{%endif%}
 </ul>
     {% endblock %}

@@ -26,9 +26,26 @@
         </tbody>
     </table>
 
+    <div>
+        <h2>Commentaires :</h2>
+        {% for comment in episode.comments %}
+        <div>
+            <p>{{ comment.comment }}</p>
+            <p>{{comment.rate}}</p>
+            <p>{{comment.author.email}}</p>
+            {% if is_granted("ROLE_ADMIN") or app.user == comment.author %}
+                <a href="{{ path("program_comment_delete", {'program_id':program.id, 'season_id':season.id, 'episode_id': episode.id, 'comment_id': comment.id})}}">Supprimer le commentaire</a>
+            {% endif %}
+        </div>
+        {% else %}
+            Aucun commentaire trouvé.
+        {% endfor %}
+    </div>
+
     <a href="{{ path('episode_index') }}">back to list</a>
 
-    <a href="{{ path('episode_edit', {'id': episode.id}) }}">edit</a>
-
+    <a href="{{ path('episode_edit', {'slug': episode.slug}) }}">edit</a>
+    
     {{ include('episode/_delete_form.html.twig') }}
+
 {% endblock %}

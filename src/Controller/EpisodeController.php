@@ -13,6 +13,8 @@ use Symfony\Component\Routing\Annotation\Route;
 use App\Service\Slugify;
 use Symfony\Component\Mailer\MailerInterface;
 use Symfony\Component\Mime\Email;
+use App\Entity\Comment;
+use App\Form\CommentFormType;
 
 /**
  * @Route("/episode")
@@ -32,7 +34,7 @@ class EpisodeController extends AbstractController
     /**
      * @Route("/new", name="episode_new", methods={"GET", "POST"})
      */
-    public function new(Request $request, EntityManagerInterface $entityManager, Slugify $slugify, MailerInterface $mailer): Response
+    public function new(Request $request, EntityManagerInterface $entityManager, Slugify $slugify): Response
     {
         $episode = new Episode();
         $form = $this->createForm(EpisodeType::class, $episode);
@@ -62,13 +64,16 @@ class EpisodeController extends AbstractController
     }
 
     /**
-     * @Route("/{slug}", name="episode_show", methods={"GET"})
+     * @Route("/{slug}", name="episode_show", methods={"GET", "POST"})
      */
-    public function show(Episode $episode): Response
+    public function show(Episode $episode, Slugify $slugify): Response
     {
+        $slug = $slugify->generate($episode->getTitle());
+            $episode->setSlug($slug);
         return $this->render('episode/show.html.twig', [
             'episode' => $episode,
         ]);
+
     }
 
     /**

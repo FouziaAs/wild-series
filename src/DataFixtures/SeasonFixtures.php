@@ -10,11 +10,11 @@ use Doctrine\Common\DataFixtures\DependentFixtureInterface;
 class SeasonFixtures extends Fixture implements DependentFixtureInterface
 {
        const SEASONS = [
-            'Season 1',
-            'Season 2',
-            'Season 3',
-            'Season 4',
-            'Season 5',
+            '1',
+            '2',
+            '3',
+            '4',
+            '5',
     
         ];
         

@@ -9,7 +9,7 @@
         </div>
         <div class="show-list">
             {% for program in actor.programs %}
-                <h2><a href="{{ path("program_show", { id: program.id }) }}">{{program.title}}</a></h2>
+                <h2><a href="{{ path("program_show", { slug:program.slug }) }}">{{program.title}}</a></h2>
             {% else %}
                  Aucune série trouvée.
             {% endfor %}
